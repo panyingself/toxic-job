@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.toxic.job.mapper.ScheduleMapper">
+  <resultMap id="BaseResultMap" type="com.toxic.job.model.Schedule">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="job_name" jdbcType="VARCHAR" property="jobName" />
+    <result column="job_group" jdbcType="VARCHAR" property="jobGroup" />
+    <result column="cron" jdbcType="VARCHAR" property="cron" />
+    <result column="bean_name" jdbcType="VARCHAR" property="beanName" />
+    <result column="is_concurrent" jdbcType="CHAR" property="isConcurrent" />
+    <result column="method_name" jdbcType="VARCHAR" property="methodName" />
+    <result column="create_user_id" jdbcType="VARCHAR" property="createUserId" />
+    <result column="create_date_time" jdbcType="TIMESTAMP" property="createDateTime" />
+    <result column="modify_user_id" jdbcType="VARCHAR" property="modifyUserId" />
+    <result column="modify_date_time" jdbcType="TIMESTAMP" property="modifyDateTime" />
+    <result column="remarks" jdbcType="VARCHAR" property="remarks" />
+    <result column="status" jdbcType="CHAR" property="status" />
+    <result column="delete_flag" jdbcType="VARCHAR" property="deleteFlag" />
+  </resultMap>
+
+  <sql id="Base_Column_List">
+    id, job_name, job_group, cron, bean_name, is_concurrent, method_name, create_user_id, 
+    create_date_time, modify_user_id, modify_date_time, remarks, status, delete_flag
+  </sql>
+
+  <sql id="common_where_if">
+    <if test="jobName != null and jobName!=''">
+      AND  job_name = #{jobName,jdbcType=VARCHAR}
+    </if>
+    <if test="jobGroup != null and jobGroup!=''">
+      AND job_group = #{jobGroup,jdbcType=VARCHAR}
+    </if>
+    <if test="cron != null and cron!=''">
+      AND cron = #{cron,jdbcType=VARCHAR}
+    </if>
+    <if test="beanName != null and beanName!=''">
+      AND bean_name = #{beanName,jdbcType=VARCHAR}
+    </if>
+    <if test="isConcurrent != null and isConcurrent!=''">
+      AND is_concurrent = #{isConcurrent,jdbcType=CHAR}
+    </if>
+    <if test="methodName != null and methodName!=''">
+      AND method_name = #{methodName,jdbcType=VARCHAR}
+    </if>
+    <if test="createUserId != null and createUserId!=''">
+      AND create_user_id = #{createUserId,jdbcType=VARCHAR}
+    </if>
+    <if test="createDateTime != null ">
+      AND create_date_time = #{createDateTime,jdbcType=TIMESTAMP}
+    </if>
+    <if test="modifyUserId != null and modifyUserId!=''">
+      AND modify_user_id = #{modifyUserId,jdbcType=VARCHAR}
+    </if>
+    <if test="modifyDateTime != null ">
+      AND modify_date_time = #{modifyDateTime,jdbcType=TIMESTAMP}
+    </if>
+    <if test="remarks != null and remarks!='' ">
+      AND   remarks like CONCAT('%','${remarks}','%' )
+    </if>
+
+    <if test="status != null and status!=''">
+      AND status = #{status,jdbcType=CHAR}
+    </if>
+    <if test="deleteFlag != null and deleteFlag!=''">
+      AND delete_flag = #{deleteFlag,jdbcType=VARCHAR}
+    </if>
+
+    <if test="createDateTimeFrom!=null ">
+      AND create_date_time >=   #{createDateTimeFrom,jdbcType=TIMESTAMP}
+    </if>
+
+    <if test="createDateTimeTo!=null ">
+      AND create_date_time &lt; date_add( #{createDateTimeTo,jdbcType=TIMESTAMP}, INTERVAL 1 DAY )
+    </if>
+
+  </sql>
+
+  <select id="selectById" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from schedule
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+
+  <delete id="deleteById" parameterType="java.lang.Long">
+    delete from schedule
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+
+  <insert id="insert" parameterType="com.toxic.job.model.Schedule">
+    insert into schedule (id, job_name, job_group, 
+      cron, bean_name, is_concurrent, 
+      method_name, create_user_id, create_date_time, 
+      modify_user_id, modify_date_time, remarks, 
+      status, delete_flag)
+    values (#{id,jdbcType=BIGINT}, #{jobName,jdbcType=VARCHAR}, #{jobGroup,jdbcType=VARCHAR}, 
+      #{cron,jdbcType=VARCHAR}, #{beanName,jdbcType=VARCHAR}, #{isConcurrent,jdbcType=CHAR}, 
+      #{methodName,jdbcType=VARCHAR}, #{createUserId,jdbcType=VARCHAR}, sysdate(),
+      #{modifyUserId,jdbcType=VARCHAR}, sysdate(), #{remarks,jdbcType=VARCHAR},
+      #{status,jdbcType=CHAR}, '1')
+  </insert>
+
+  <update id="updateById" parameterType="com.toxic.job.model.Schedule">
+    update schedule
+    <set>
+      <if test="jobName != null">
+        job_name = #{jobName,jdbcType=VARCHAR},
+      </if>
+      <if test="jobGroup != null">
+        job_group = #{jobGroup,jdbcType=VARCHAR},
+      </if>
+      <if test="cron != null">
+        cron = #{cron,jdbcType=VARCHAR},
+      </if>
+      <if test="beanName != null">
+        bean_name = #{beanName,jdbcType=VARCHAR},
+      </if>
+      <if test="isConcurrent != null">
+        is_concurrent = #{isConcurrent,jdbcType=CHAR},
+      </if>
+      <if test="methodName != null">
+        method_name = #{methodName,jdbcType=VARCHAR},
+      </if>
+      <if test="createUserId != null">
+        create_user_id = #{createUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="createDateTime != null">
+        create_date_time = #{createDateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifyUserId != null">
+        modify_user_id = #{modifyUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="remarks != null">
+        remarks = #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=CHAR},
+      </if>
+      <if test="deleteFlag != null">
+        delete_flag = #{deleteFlag,jdbcType=VARCHAR},
+      </if>
+      modify_date_time = sysdate()
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+  <select id="queryForList"  resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from schedule
+    <where>
+      <include refid="common_where_if"/>
+      and delete_flag = 1
+    </where>
+    ORDER BY create_date_time DESC
+  </select>
+
+</mapper>
