@@ -1,7 +1,9 @@
+
 <div>
+
     <form class="layui-form" action="${request.contextPath}/job/edit" id="job_edit_form">
 
-        <div class="layui-form-item" style="display: block">
+        <div class="layui-form-item" style="display: none">
             <label class="layui-form-label">id</label>
             <div class="layui-input-block">
                 <input type="text" name="id" required  lay-verify="required" placeholder="请输入任务名称" autocomplete="off" class="layui-input" value="${job.id}">
@@ -18,7 +20,7 @@
         <div class="layui-form-item">
             <label class="layui-form-label">任务分组</label>
             <div class="layui-input-inline">
-                <input type="password" name="jobGroup" required lay-verify="required" placeholder="请输入任务分组" autocomplete="off" class="layui-input" value="${job.jobGroup}">
+                <input  name="jobGroup" required lay-verify="required" placeholder="请输入任务分组" autocomplete="off" class="layui-input" value="${job.jobGroup}">
             </div>
             <div class="layui-form-mid layui-word-aux">辅助文字</div>
         </div>
@@ -33,7 +35,7 @@
         <div class="layui-form-item">
             <label class="layui-form-label">任务状态</label>
             <div class="layui-input-inline">
-                <input type="password" name="status" required lay-verify="required" placeholder="请输入任务状态" autocomplete="off" class="layui-input" value="${job.status}">
+                <input name="status" required lay-verify="required" placeholder="请输入任务状态" autocomplete="off" class="layui-input" value="${job.status}">
             </div>
             <div class="layui-form-mid layui-word-aux">辅助文字</div>
         </div>
@@ -48,7 +50,7 @@
         <div class="layui-form-item">
             <label class="layui-form-label">执行方法</label>
             <div class="layui-input-inline">
-                <input type="password" name="methodName" required lay-verify="required" placeholder="请输入执行方法" autocomplete="off" class="layui-input" value="${job.methodName}">
+                <input  name="methodName" required lay-verify="required" placeholder="请输入执行方法" autocomplete="off" class="layui-input" value="${job.methodName}">
             </div>
             <div class="layui-form-mid layui-word-aux">辅助文字</div>
         </div>
@@ -62,15 +64,15 @@
 
         <div class="layui-form-item">
             <div class="layui-input-block">
-                <button class="layui-btn"  onclick="toJobEdit('${request.contextPath}/job/queryList')">立即提交</button>
-                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                <a class="layui-btn"  onclick="toJobEdit('${request.contextPath}/job/queryList')">立即提交</a>
+                <button type="reset" class="layui-btn layui-btn-primary" onclick="jobEditReset()">重置</button>
             </div>
         </div>
 
     </form>
 
-    <a onclick="toJobEdit('${request.contextPath}/job/queryList')">test
-    </a>
+    <#--<a onclick="toJobEdit('${request.contextPath}/job/queryList')">test-->
+    <#--</a>-->
 </div>
 <script src="${request.contextPath}/js/job/job_edit.js"></script>
 <script>

@@ -23,15 +23,13 @@ public class JobCenterController {
     private JobCenterBusiness jobCenterBusiness;
     @RequestMapping(value = "/queryList")
     public String toJobList(Model model){
-
         model.addAttribute("jobList",jobCenterBusiness.getAllSchedule());
         return "job/job_list";
     }
 
     @RequestMapping(value = "/edit", method = RequestMethod.GET)
-    public String toEdit(Model model){
-
-        model.addAttribute("job",jobCenterBusiness.getAllSchedule().get(0));
+    public String toEdit(Model model,Long id){
+        model.addAttribute("job",jobCenterBusiness.getScheduleByid(id));
         return "job/job_edit";
     }
 
@@ -42,5 +40,25 @@ public class JobCenterController {
         int row = jobCenterBusiness.updateSchedule(schedule);
         resultVo.setData(row);
         return resultVo;
+    }
+
+    @RequestMapping(value = "/add", method = RequestMethod.POST)
+    @ResponseBody
+    public ResultVo addJob(Schedule schedule){
+        ResultVo resultVo = new ResultVo();
+        jobCenterBusiness.insertSchedule(schedule);
+        return new ResultVo();
+    }
+
+    @RequestMapping(value = "/add", method = RequestMethod.GET)
+    public String toAddJob(Schedule schedule){
+        return "job/job_add";
+    }
+
+    @RequestMapping(value = "/delete")
+    @ResponseBody
+    public ResultVo deleteJob(Long id){
+        jobCenterBusiness.deleteSchedule(id);
+        return new ResultVo();
     }
 }
